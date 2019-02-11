@@ -61,5 +61,4 @@ typings/
 .next
 
 # docker dependences
-*/data/
-*/db
+data/
