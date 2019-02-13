@@ -55,7 +55,7 @@ exports.GetConversationById = async (req, res, next) => {
         let data = await repository.GetConversationById(req.query.conversetionId);
         res.status(200).send(data);
     }
-    catch {
+    catch (e) {
         console.log(e);
         res.status(500).send({
             message: 'Falha ao processar a requisição'

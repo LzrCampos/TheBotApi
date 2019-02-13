@@ -12,8 +12,8 @@ const host = '0.0.0.0';
 const port = 8000;
 
 // Abre conexão com o mongodb
-mongoose.connect('mongodb://admin:admin01@ds219672.mlab.com:19672/thebot', { useNewUrlParser: true });
-// mongoose.connect('mongodb://10.0.75.1:27017/thebot', { useNewUrlParser: true });
+// mongoose.connect('mongodb://admin:admin01@ds219672.mlab.com:19672/thebot', { useNewUrlParser: true });
+mongoose.connect('mongodb://mongodb/thebot', { useNewUrlParser: true });
 
 // Inicia as models
 const bot = require('./models/bot.model');
