@@ -1,29 +1,45 @@
 const mongoose = require('mongoose');
 const Bot = mongoose.model('bot');
 
-exports.create = async (data) => {
+// Insere um novo bot na base
+exports.createBot = async (data) => {
     let bot = new Bot(data)
     await bot.save()
 }
 
-exports.get = async () => {
-    let res = await Bot.find();
+// Lista todos os bot na base
+exports.findAll = async () => {
+    let res = await Bot
+    .find(
+        {}, 
+        {"_id": 0, "id":1, "name":1}
+    );
     return res
 }
 
-exports.getById = async (id) => {
-    let res = await Bot.findById(id);
+// Busca um bot na base pelo id
+exports.findBotById = async (id) => {
+    let res = await Bot
+    .findOne(
+        {id: id}, 
+        {"id":1, "name":1}
+    );
     return res
 }
 
-exports.updated = async (data) => {
-    Bot.findByIdAndUpdate(data.id, {
-        $set: {
-            name: data.name
-        }
-    });
+// Atualiza um bot na base pelo id
+exports.updatedBot = async (id, name) => {
+    Bot.findOneAndUpdate(
+        {id: id}, {
+            $set: {
+                name: name
+            }
+        }, function (err, place){});
 }
 
-exports.delete = async (id) => {
-    Bot.findByIdAndDelete({ _id: id}, function (res) {});
+// Deleta um bot da base pelo id
+exports.deleteBot = async (id) => {
+    Bot.findOneAndDelete(
+        { id: id}
+        , function (err, place) {});
 }

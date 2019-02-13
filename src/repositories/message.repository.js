@@ -7,8 +7,9 @@ exports.createMessage = async (data) => {
     await message.save();
 }
 
-// recupera uma menssagem na base pelo id da menssagem
+// Recupera uma menssagem na base pelo id da menssagem
 exports.getMessageId = async (id) => {
+    // Query para trazer somente oque for utlizado
     let message = await Message
     .findOne(
         {id: id}, 
@@ -17,7 +18,9 @@ exports.getMessageId = async (id) => {
     return message;
 }
 
+// Recupera menssagens de uma conversa pelo id da conversa
 exports.GetConversationById = async (id) => {
+    // Query para trazer somente oque for utlizado e ordena a conversa por data
     let message = await Message
     .find(
         {conversationId: id}, 

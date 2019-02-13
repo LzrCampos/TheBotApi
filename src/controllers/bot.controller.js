@@ -1,72 +1,75 @@
 const repository = require('../repositories/bot.repository');
+const guid = require('guid');
 
-exports.post = async (req, res, next) => {
-    try {
-        await repository.create({
-            name: req.body.name
-        });
-        res.status(201).send({
-            message: 'Bot criado!'
-        });
-    }
-    catch (e) {
-        res.status(500).send({
-            message: 'Falha ao processar a requisição'
-        });
+exports.create = async (req, res, next) => {
+    // Verifica se o nome do bot possui menos de 3 caracteres.
+    if (req.body.name.length < 3) {
+        res.status(400).send({ message: 'O nome não pode conter menos de três caracteres.' }).end();
+        return;
+    } else {
+        try {
+            await repository.createBot({
+                id: guid.raw().toString(),
+                name: req.body.name
+            });
+            res.status(201).send({
+                message: 'Bot criado!'
+            });
+        } catch (e) {
+            console.log(e);
+            res.status(500).send({
+                message: 'Falha ao processar a requisição'
+            });
+        }
     }
 }
 
-exports.get = async (req, res, next) => {
+exports.list = async (req, res, next) => {
     try {
-        let data = await repository.get();
+        let data = await repository.findAll();
         res.status(200).send(data);
-    }
-    catch {
+    } catch (e) {
+        console.log(e);
         res.status(500).send({
             message: 'Falha ao processar a requisição'
         });
     }
 }
 
-exports.getById = async (req, res, next) => {
+exports.getBot = async (req, res, next) => {
     try {
-        let data = await repository.getById(req.params.id);
+        let data = await repository.findBotById(req.params.id);
         res.status(200).send(data);
-    }
-    catch {
+    } catch (e) {
+        console.log(e);
         res.status(500).send({
             message: 'Falha ao processar a requisição'
         });
     }
 }
 
-exports.updated = async (req, res, next) => {
+exports.rename = async (req, res, next) => {
     try {
-        await repository.updated(req.body);
-        res.status(200).send({
-            message: 'Bot atualizado com sucesso!'
-        });
-    }
-    catch (e) {
+        console.log(e);
+        let data = await repository.updatedBot(req.params.id, req.body.name);
+        res.status(200).send(data);
+    } catch (e) {
         res.status(400).send({
-            message: 'Falha ao atualizar o bot!',
-            e
+            message: 'Falha ao atualizar o bot!'
         });
     };
 }
 
-exports.delete = async (req, res, next) => {
+exports.deleteBot = async (req, res, next) => {
     try {
-        await repository.delete(req.params.id);
+        await repository.deleteBot(req.params.id);
         res.status(200).send({
             message: 'Bot excluido com sucesso!'
         })
-    }
-    catch (e) {
+    } catch (e) {
+        console.log(e);
         res.status(400).send({
-            message: 'Falha ao excluir o bot!',
-            e
+            message: 'Falha ao excluir o bot!'
         });
     }
 }
-
